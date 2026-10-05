@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "author": "Automated Smart Systems Lab",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "wokwi-arduino-uno",
+      "id": "uno",
+      "top": 120,
+      "left": 140,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-lcd1602",
+      "id": "lcd1",
+      "top": -160,
+      "left": 90,
+      "attrs": {
+        "pins": "i2c"
+      }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot1",
+      "top": 200,
+      "left": -120,
+      "attrs": {
+        "value": "512"
+      }
+    },
+    {
+      "type": "wokwi-relay-module",
+      "id": "relay1",
+      "top": -140,
+      "left": 480,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": 120,
+      "left": 460,
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led1",
+      "top": 105,
+      "left": 550,
+      "attrs": {
+        "color": "blue",
+        "label": "Water Pump"
+      }
+    },
+    {
+      "type": "wokwi-buzzer",
+      "id": "buzzer1",
+      "top": 230,
+      "left": 480,
+      "attrs": {
+        "mode": "smooth",
+        "volume": "0.5"
+      }
+    }
+  ],
+  "connections": [
+    [ "pot1:VCC", "uno:5V", "red", [ "v0" ] ],
+    [ "pot1:GND", "uno:GND.1", "black", [ "v0" ] ],
+    [ "pot1:SIG", "uno:A0", "green", [ "v0" ] ],
+
+    [ "lcd1:VCC", "uno:5V", "red", [ "h-30", "v120" ] ],
+    [ "lcd1:GND", "uno:GND.1", "black", [ "h-20", "v110" ] ],
+    [ "lcd1:SDA", "uno:A4", "blue", [ "h20", "v210" ] ],
+    [ "lcd1:SCL", "uno:A5", "gold", [ "h30", "v220" ] ],
+
+    [ "relay1:VCC", "uno:5V", "red", [ "v50", "h-260" ] ],
+    [ "relay1:GND", "uno:GND.2", "black", [ "v60", "h-230" ] ],
+    [ "relay1:IN", "uno:7", "orange", [ "v40", "h-150" ] ],
+
+    [ "uno:8", "r1:1", "cyan", [ "v-10", "h120" ] ],
+    [ "r1:2", "led1:A", "cyan", [ "v0" ] ],
+    [ "led1:C", "uno:GND.2", "black", [ "v50", "h-200" ] ],
+
+    [ "buzzer1:1", "uno:GND.3", "black", [ "v20", "h-120" ] ],
+    [ "buzzer1:2", "uno:9", "purple", [ "v-20", "h-150" ] ]
+  ],
+  "dependencies": {}
+}

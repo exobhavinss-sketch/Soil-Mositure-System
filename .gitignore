@@ -1,0 +1,24 @@
+# Compiled Arduino binaries & build output
+build/
+*.hex
+*.elf
+*.bin
+*.o
+*.d
+*.map
+
+# IDE & Editor temporary files
+.vscode/
+.idea/
+*.swp
+*~
+*.bak
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# Wokwi simulation artifacts
+*.vcd
+wokwi.log

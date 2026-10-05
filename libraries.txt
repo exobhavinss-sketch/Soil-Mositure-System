@@ -1,0 +1,2 @@
+# Arduino libraries required for Wokwi Simulation
+LiquidCrystal I2C
