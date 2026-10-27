@@ -5,17 +5,23 @@
 
 $ErrorActionPreference = "Stop"
 
-# Locate arduino-cli
+# Locate arduino-cli. Keep the project portable by avoiding a user-specific
+# path and by treating inaccessible candidate paths as unavailable.
 $cliPaths = @(
-    "C:\Users\exobh\AppData\Local\Programs\Arduino IDE\resources\app\lib\backend\resources\arduino-cli.exe",
-    "$env:LOCALAPPDATA\Programs\Arduino IDE\resources\app\lib\backend\resources\arduino-cli.exe"
-)
+    (Join-Path $env:LOCALAPPDATA "Programs\Arduino IDE\resources\app\lib\backend\resources\arduino-cli.exe"),
+    (Join-Path $env:ProgramFiles "Arduino IDE\resources\app\lib\backend\resources\arduino-cli.exe")
+) | Where-Object { $_ }
 
 $arduinoCli = $null
 foreach ($path in $cliPaths) {
-    if (Test-Path $path) {
-        $arduinoCli = $path
-        break
+    try {
+        if (Test-Path -LiteralPath $path -PathType Leaf -ErrorAction Stop) {
+            $arduinoCli = $path
+            break
+        }
+    } catch {
+        # A candidate may exist but be inaccessible due to local permissions.
+        # Continue searching for a usable CLI on PATH.
     }
 }
 
@@ -27,7 +33,7 @@ if (-not $arduinoCli) {
 }
 
 if (-not $arduinoCli) {
-    Write-Error "arduino-cli executable not found. Please install Arduino IDE or Arduino CLI."
+    Write-Error "arduino-cli executable not found or inaccessible. Install Arduino IDE/CLI, or add arduino-cli to PATH."
     exit 1
 }
 

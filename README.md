@@ -165,7 +165,7 @@ LED      : OFF
 7. Click **Upload** (or run `arduino-cli compile --upload -p COMx --fqbn arduino:avr:uno .`).
 8. Open the **Serial Monitor** at **9600 baud** to observe live telemetry.
 
-### 4. Interactive Simulation & Verification Steps:
+### 7.1 Interactive Simulation & Verification Steps:
 - **Splash Screen**: Confirm the LCD displays `SMART / IRRIGATION` for 2.0 seconds upon startup.
 - **Baseline MOIST State**: Observe initial state at ~50% moisture with status `MOIST`, relay `OFF`, and pump LED `OFF`.
 - **Simulating Dry Soil**: Rotate the potentiometer towards 0%–30%. The LCD updates to `Status: DRY`, the relay clicks `ON`, the blue pump LED lights up, and the buzzer sounds a single crisp 250ms alert tone.
@@ -188,3 +188,22 @@ LED      : OFF
 
 **Q4: How does the buzzer avoid continuous buzzing while soil is dry?**  
 *Answer:* The firmware implements edge detection (`newState == SOIL_DRY && previousState != SOIL_DRY`) combined with a non-blocking `millis()` timer. The buzzer fires only once for 250 milliseconds when the dry threshold is first crossed.
+
+---
+
+## 9. Maintenance Updates
+
+The project was reviewed and the following issues were corrected:
+
+1. **Portable build-script path detection:** `compile.ps1` no longer depends on a hard-coded Windows username path. It checks standard Arduino IDE locations, safely ignores inaccessible candidates, and falls back to `arduino-cli` on `PATH`.
+2. **Clearer build failure:** If Arduino CLI cannot be found, the script now reports that it is missing or inaccessible and explains how to resolve it, instead of failing during an unhandled path probe.
+3. **Documentation numbering:** Corrected the duplicated Section 4 heading in the deployment and verification instructions.
+4. **Build verification note:** Documented that the existing `build/` artifacts are historical outputs and that a fresh build requires a locally available Arduino CLI.
+
+The circuit definition remains valid JSON, and the repository contains previously generated Arduino Uno build artifacts under `build/`. To generate a fresh build, run:
+
+```powershell
+.\compile.ps1
+```
+
+This requires Arduino IDE or Arduino CLI to be installed and discoverable.
